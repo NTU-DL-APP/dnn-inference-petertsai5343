@@ -3,14 +3,13 @@ import json
 
 # === Activation functions ===
 def relu(x):
+    # 正確實作 ReLU：輸出大於0的部分，其他變0
     return np.maximum(0, x)
 
-def softmax(x, axis=-1):
-    # 減去最大值以避免數值溢位
-    x_shifted = x - np.max(x, axis=axis, keepdims=True)
-    exp_x = np.exp(x_shifted)
-    return exp_x / np.sum(exp_x, axis=axis, keepdims=True)
-
+def softmax(x):
+    # 正確實作 Softmax，避免數值爆炸
+    e = np.exp(x - np.max(x, axis=-1, keepdims=True))
+    return e / np.sum(e, axis=-1, keepdims=True)
 
 # === Flatten ===
 def flatten(x):
@@ -43,8 +42,6 @@ def nn_forward_h5(model_arch, weights, data):
 
     return x
 
-
 # You are free to replace nn_forward_h5() with your own implementation 
 def nn_inference(model_arch, weights, data):
     return nn_forward_h5(model_arch, weights, data)
-    
